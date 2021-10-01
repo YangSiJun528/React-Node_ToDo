@@ -5,11 +5,13 @@ const path = require('path')
 const { send } = require('process')
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://root:1234567890@cluster0.deicx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
-  useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
-})
+mongoose.connect('mongodb+srv://root:1234567890@cluster0.deicx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+//, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false }
+  )
+  .then( () => {console.log('mongoose is ready!!!')
+}).catch( (err) => {console.log(err)})
 
-app.use(express.urlencoded({extended: true})) 
+// app.use(express.urlencoded({extended: true})) 
 
 const http = require('http').createServer(app)
 
