@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     maxLength: 50
   },
-  name: {
-    email: String,
+  email: {
+    type: String,
     trim: true,
     unique: 1
   },
