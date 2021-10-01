@@ -3,7 +3,11 @@ const app = express()
 const PORT = process.env.port || 8000
 const path = require('path')
 const { send } = require('process')
+const mongoose = require('mongoose');
 
+mongoose.connect('mongodb+srv://root:1234567890@cluster0.deicx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+  useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
+})
 
 app.use(express.urlencoded({extended: true})) 
 
