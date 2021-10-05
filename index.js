@@ -25,7 +25,7 @@ app.use(express.urlencoded( {extended : false } ));
 app.use(express.json()); 
 
 //DB 불러오는 코드
-mongoose.connect(process.env.mongoURI
+mongoose.connect(process.env.MONGO_URI
 //, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false }
   )
   .then( () => {console.log('mongoose is ready!!!')
