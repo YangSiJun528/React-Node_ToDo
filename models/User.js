@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+// 비밀번호를 해싱하기 전에 유추하기 어렵게 스트링을 추가하는데 이게 salt임
 const saltRounds = 10;
 
 const userSchema = new mongoose.Schema({
@@ -33,8 +34,8 @@ const userSchema = new mongoose.Schema({
   }
 })
 
-// userSchema.pre() >> 스키마 선언되기 전에 실행됨 (미들웨어같은거)
-// 유저 정보 암호와
+// userSchema.pre() >> save 실행되기 전에 실행됨 (미들웨어같은거)
+// 유저 정보 암호화
 userSchema.pre('save',(next)=>{
   let user = this
   if(user.isModified('password')){
@@ -46,8 +47,17 @@ userSchema.pre('save',(next)=>{
         next()
       })
     })
+  } else {
+    next()
   }
 })
+
+userSchema.methods.comparePassword = (plainPassword, callback) => {
+  bcrypt.compare(plainPassword, this.password, (err, isMatch) => {
+    if(err) return callback(err)
+    callback(null, isMatch)
+  })
+}
 
 const User = mongoose.model('User',userSchema)
 

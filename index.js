@@ -1,5 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv')
+const jwt = require('jsonwebtoken')
 const app = express()
 const PORT = process.env.port || 8000
 const path = require('path')
@@ -51,6 +52,22 @@ app.post('/register', (req, res) => {
   user.save((err,doc) => {
     if (err) { return res.json({success: false, err})}
     return res.status(200).json({success: true})
+  })
+})
+
+app.post('/login', (req, res) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    if(!user)
+      return res.json({loginSuccess: false, message:'제공된 이메일에 맞는 유저가 없습니다.'})
+  })
+
+  user.comparePassword(res.body.password, (err,isMatch) => {
+    if(!isMatch)
+      return res.json({loginSuccess: false, message:'비밀번호가 틀렸습니다.'})
+  })
+
+  user.generateToken((err, user) => {
+
   })
 })
 
