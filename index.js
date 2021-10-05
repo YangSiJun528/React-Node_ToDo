@@ -1,4 +1,5 @@
 const express = require('express')
+const dotenv = require('dotenv')
 const app = express()
 const PORT = process.env.port || 8000
 const path = require('path')
@@ -7,12 +8,24 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 const { User } = require('./models/User.js')
 
+//환경변수 설정
+require('dotenv').config(
+  dotenv.config({
+    path: path.resolve(
+      process.cwd(),
+      process.env.NODE_ENV == "production" ? ".env" : ".env.dev"
+    )
+  }));
+//process.env.NODE_ENV는 출력하면 실제로 값이 있더라도 undefined로 나옴
+
+
 //application/x-www-form-urlencoded
 app.use(express.urlencoded( {extended : false } ));
 //application/json
 app.use(express.json()); 
 
-mongoose.connect('mongodb+srv://root:1234567890@cluster0.deicx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+//DB 불러오는 코드
+mongoose.connect(process.env.mongoURI
 //, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false }
   )
   .then( () => {console.log('mongoose is ready!!!')
@@ -24,8 +37,13 @@ const http = require('http').createServer(app)
 
 // app.use(express.static(path.join(__dirname, '')));
 
+// // 환경변수 확인하는 코드
+// app.get('/', (req, res) => {
+//   res.send(process.env.mode)
+// })
+
 app.get('/', (req, res) => {
-  res.send("start")
+  res.send()
 })
 
 app.post('/register', (req, res) => {
